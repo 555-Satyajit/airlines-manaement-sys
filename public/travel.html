@@ -1,0 +1,678 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Destinations - Travel Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .destination-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .price-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <!-- Header -->
+    <header class="relative z-50 px-6 py-4">
+        <nav class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold text-white">
+                ✈️ Travel Explorer
+            </div>
+            <button id="signInBtn" class="glass-effect text-white px-6 py-2 rounded-full font-medium hover:bg-white hover:text-purple-900 transition-all duration-300 transform hover:scale-105">
+                Sign In
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative px-6 py-16 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 floating-animation">
+                Explore the World
+            </h1>
+            <p class="text-xl md:text-2xl text-purple-200 mb-8 max-w-3xl mx-auto">
+                Discover breathtaking destinations, immerse yourself in diverse cultures, and create memories that last a lifetime. Your next adventure awaits.
+            </p>
+            <div class="flex justify-center space-x-8 text-purple-200">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">10+</div>
+                    <div class="text-sm">Destinations</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">50K+</div>
+                    <div class="text-sm">Happy Travelers</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">4.9★</div>
+                    <div class="text-sm">Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Grid -->
+    <section class="px-6 py-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Paris -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1431274172761-fca41d930114?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹599</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Paris</h3>
+                            <p class="text-purple-300">City of Love & Lights</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience the romance of Paris with its iconic Eiffel Tower, world-class museums, charming cafés, and architectural marvels. Stroll along the Seine, visit the Louvre, and indulge in exquisite French cuisine.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tokyo -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹799</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Tokyo</h3>
+                            <p class="text-purple-300">Modern Metropolis</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Immerse yourself in Tokyo's perfect blend of ancient traditions and cutting-edge technology. From serene temples to bustling districts like Shibuya, experience the heart of Japanese culture and innovation.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New York -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹399</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">New York</h3>
+                            <p class="text-purple-300">The Big Apple</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Discover the city that never sleeps! From Broadway shows and Central Park to the Statue of Liberty and world-class shopping, New York offers endless possibilities and unforgettable experiences.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dubai -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹699</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Dubai</h3>
+                            <p class="text-purple-300">Luxury & Adventure</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience the pinnacle of luxury in Dubai with its towering skyscrapers, pristine beaches, world-class shopping malls, and thrilling desert adventures. A perfect blend of modern marvel and traditional charm.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- London -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹499</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">London</h3>
+                            <p class="text-purple-300">Royal Heritage</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Explore London's rich history and vibrant culture. From Buckingham Palace and Big Ben to modern attractions like the London Eye, discover the perfect mix of tradition and contemporary life.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sydney -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹899</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Sydney</h3>
+                            <p class="text-purple-300">Harbor City</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience Sydney's stunning harbor, iconic Opera House, and beautiful beaches. Enjoy world-class dining, vibrant nightlife, and the laid-back Australian lifestyle in this cosmopolitan city.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">7 Days • 6 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rome -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1529154166925-574a0236a4f4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹549</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Rome</h3>
+                            <p class="text-purple-300">Eternal City</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Step back in time in Rome, where ancient history meets modern Italian culture. Visit the Colosseum, Vatican City, and Trevi Fountain while enjoying authentic pasta and gelato.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bangkok -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹449</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Bangkok</h3>
+                            <p class="text-purple-300">City of Angels</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Discover Bangkok's vibrant street life, ornate temples, and incredible street food. From floating markets to rooftop bars, experience the perfect mix of tradition and modernity in Thailand's capital.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Singapore -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹649</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Singapore</h3>
+                            <p class="text-purple-300">Lion City</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience Singapore's unique blend of cultures, futuristic architecture, and lush green spaces. From Marina Bay Sands to Gardens by the Bay, discover this modern marvel of urban planning.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mumbai -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹299</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Mumbai</h3>
+                            <p class="text-purple-300">City of Dreams</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Explore Mumbai's energetic spirit, from Bollywood glamour to colonial architecture. Experience the bustling markets, street food culture, and the iconic Gateway of India in this vibrant metropolis.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">3 Days • 2 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barcelona -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1583422409516-2895a77efded?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹549</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Barcelona</h3>
+                            <p class="text-purple-300">Artistic Marvel</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Discover Barcelona's unique blend of Gothic and modernist architecture. From Gaudí's masterpieces like Sagrada Familia to vibrant Las Ramblas, experience Catalonian culture at its finest.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amsterdam -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534351590666-13e3e96b5017?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹599</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Amsterdam</h3>
+                            <p class="text-purple-300">Canal City</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Navigate Amsterdam's charming canals, explore world-class museums like Van Gogh Museum, and experience the vibrant nightlife. Cycle through tulip fields and enjoy the laid-back Dutch lifestyle.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Istanbul -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://plus.unsplash.com/premium_photo-1691338312403-e9f7f7984eeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹449</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Istanbul</h3>
+                            <p class="text-purple-300">Bridge of Two Worlds</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience where Europe meets Asia in Istanbul. Marvel at the Hagia Sophia, explore the Grand Bazaar, and enjoy Turkish cuisine while witnessing the beautiful Bosphorus strait.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prague -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://plus.unsplash.com/premium_photo-1721675134861-a495c57ca4ef?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹399</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Prague</h3>
+                            <p class="text-purple-300">City of a Hundred Spires</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Step into a fairy-tale in Prague with its medieval architecture, stunning castle, and famous Charles Bridge. Enjoy Czech beer, classical concerts, and the magical Old Town Square.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bali -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1938&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹599</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Bali</h3>
+                            <p class="text-purple-300">Island Paradise</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Escape to Bali's tropical paradise with pristine beaches, ancient temples, and lush rice terraces. Experience traditional Balinese culture, world-class spas, and stunning sunsets in Seminyak.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maldives -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2017/12/15/13/51/polynesia-3021072_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹1299</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Maldives</h3>
+                            <p class="text-purple-300">Tropical Heaven</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Indulge in the ultimate luxury at the Maldives with overwater bungalows, crystal-clear lagoons, and pristine coral reefs. Perfect for romantic getaways and underwater adventures.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cairo -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2010/11/25/egypt-399_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹499</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Cairo</h3>
+                            <p class="text-purple-300">Land of Pharaohs</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Journey through ancient history in Cairo with the iconic Pyramids of Giza, the Sphinx, and world-renowned Egyptian Museum. Experience the vibrant Khan el-Khalili bazaar and Nile River cruises.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cape Town -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2017/07/29/23/00/cape-town-2552925_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹749</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Cape Town</h3>
+                            <p class="text-purple-300">Mother City</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Discover Cape Town's breathtaking landscapes with Table Mountain, pristine beaches, and renowned wine regions. Experience rich history, vibrant culture, and stunning coastal drives along Chapman's Peak.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seoul -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2020/04/20/18/18/lotte-world-tower-5068706_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹649</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Seoul</h3>
+                            <p class="text-purple-300">K-Culture Capital</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Immerse yourself in Seoul's dynamic blend of ancient palaces and futuristic skyscrapers. Experience K-pop culture, street food markets, traditional hanbok, and cutting-edge technology districts.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Santorini -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2016/04/05/06/53/santorini-1309585_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹799</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Santorini</h3>
+                            <p class="text-purple-300">Aegean Jewel</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Experience Santorini's iconic white-washed buildings, breathtaking sunsets, and volcanic beaches. Enjoy world-class wine tasting, luxury resorts, and the most romantic atmosphere in the Greek islands.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">4 Days • 3 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kyoto -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2020/12/13/16/22/kyoto-5828827_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹699</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Kyoto</h3>
+                            <p class="text-purple-300">Ancient Capital</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Discover Japan's cultural heart in Kyoto with thousands of temples, traditional geisha districts, and serene bamboo forests. Experience authentic tea ceremonies, kaiseki dining, and stunning cherry blossoms.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">5 Days • 4 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Iceland -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2016/11/08/05/26/aurora-1807230_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹899</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Iceland</h3>
+                            <p class="text-purple-300">Land of Fire & Ice</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Witness Iceland's otherworldly landscapes with geysers, waterfalls, glaciers, and Northern Lights. Experience the Blue Lagoon, dramatic coastlines, and unique volcanic terrain in this Nordic island nation.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Morocco -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2016/12/04/19/30/marrakech-1882844_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹549</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Morocco</h3>
+                            <p class="text-purple-300">Maghreb Magic</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Explore Morocco's enchanting blend of Arab, Berber, and European cultures. From Marrakech's bustling souks to Sahara desert adventures, experience mint tea, tagines, and stunning riads.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">7 Days • 6 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tokyo -->
+                <div class="destination-card rounded-2xl overflow-hidden group cursor-pointer">
+                    <div class="relative h-64 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2021/01/13/16/15/tokyo-5913714_1280.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="price-badge text-white px-3 py-1 rounded-full text-sm font-bold">From ₹799</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-2xl font-bold">Tokyo</h3>
+                            <p class="text-purple-300">Modern Metropolis</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Immerse yourself in Tokyo's perfect blend of ancient traditions and cutting-edge technology. From serene temples to bustling districts like Shibuya, experience the heart of Japanese culture and innovation.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-semibold">6 Days • 5 Nights</span>
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">Book Now</button>
+                        </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="px-6 py-16 text-center">
+        <div class="max-w-4xl mx-auto glass-effect rounded-3xl p-12">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Ready for Your Next Adventure?</h2>
+            <p class="text-xl text-purple-200 mb-8">Join thousands of travelers who have discovered the world with us. Your dream destination is just a click away.</p>
+            <div class="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+                <button class="w-full md:w-auto bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
+                    Start Planning
+                </button>
+                <button class="w-full md:w-auto border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-900 transition-all duration-300">
+                    Contact Us
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-12 border-t border-purple-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="text-2xl font-bold text-white mb-4">✈️ Travel Explorer</div>
+            <p class="text-purple-300 mb-6">Making dream destinations accessible to everyone</p>
+            <div class="flex justify-center space-x-6 text-purple-400">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Contact</a>
+                <a href="#" class="hover:text-white transition-colors">Support</a>
+            </div>
+            <div class="mt-6 text-purple-500">
+                © 2025 Travel Explorer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sign In Button Functionality
+        document.getElementById('signInBtn').addEventListener('click', function() {
+        window.location.href = "login.html";
+        });
+
+        // Add smooth scrolling and interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth reveal animation for cards
+            const cards = document.querySelectorAll('.destination-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            // Add click handlers for book now buttons
+            document.querySelectorAll('.destination-card button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const destination = this.closest('.destination-card').querySelector('h3').textContent;
+                    alert(`Booking ${destination} - This would redirect to booking page!`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

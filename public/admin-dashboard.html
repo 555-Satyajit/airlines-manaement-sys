@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SkyLine Airlines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1e40af',
+                        'secondary-blue': '#3b82f6',
+                        'light-blue': '#dbeafe',
+                        'success-green': '#10b981',
+                        'warning-orange': '#f59e0b',
+                        'error-red': '#ef4444',
+                        'neutral-gray': '#6b7280',
+                        'light-gray': '#f9fafb'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light-gray min-h-screen">
+    <!-- Navigation Header -->
+    <nav class="bg-primary-blue text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-plane-departure text-2xl mr-3"></i>
+                        <h1 class="text-xl font-bold">SkyLine Airlines</h1>
+                        <span class="ml-3 px-2 py-1 bg-warning-orange text-xs rounded-full">ADMIN</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="notificationBtn" class="relative p-2 rounded-full hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute -top-1 -right-1 bg-error-red text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
+                            <text x="16" y="20" fill="#1e40af" font-family="Arial" font-size="12" text-anchor="middle">AA</text>
+                        </svg>
+                        <span class="text-sm">Admin User</span>
+                        <button id="logoutBtn" class="ml-2 px-3 py-1 bg-error-red hover:bg-red-600 rounded text-sm transition-colors">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg min-h-screen">
+            <div class="p-4">
+                <nav class="space-y-2">
+                    <button data-section="dashboard" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center bg-light-blue text-primary-blue">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        Dashboard
+                    </button>
+                    <button data-section="flights" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-plane mr-3"></i>
+                        Flight Management
+                    </button>
+                    <button data-section="aircraft" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-plane-departure mr-3"></i>
+                        Aircraft Management
+                    </button>
+                    <button data-section="routes" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-route mr-3"></i>
+                        Route Management
+                    </button>
+                    <button data-section="bookings" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-ticket-alt mr-3"></i>
+                        Booking Management
+                    </button>
+                    <button data-section="airports" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-map-marker-alt mr-3"></i>
+                        Airport Management
+                    </button>
+                    <button data-section="reports" class="nav-item w-full text-left px-4 py-2 rounded-lg hover:bg-light-blue transition-colors flex items-center">
+                        <i class="fas fa-chart-bar mr-3"></i>
+                        Reports & Analytics
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Dashboard Overview</h2>
+                    <p class="text-neutral-gray">Welcome to SkyLine Airlines Admin Panel</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-neutral-gray">Total Flights</p>
+                                <p class="text-2xl font-bold text-primary-blue" id="totalFlights">245</p>
+                            </div>
+                            <i class="fas fa-plane text-3xl text-secondary-blue"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-neutral-gray">Active Bookings</p>
+                                <p class="text-2xl font-bold text-success-green" id="activeBookings">1,234</p>
+                            </div>
+                            <i class="fas fa-ticket-alt text-3xl text-success-green"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-neutral-gray">Revenue Today</p>
+                                <p class="text-2xl font-bold text-warning-orange" id="dailyRevenue">$45,670</p>
+                            </div>
+                            <i class="fas fa-dollar-sign text-3xl text-warning-orange"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-neutral-gray">Fleet Size</p>
+                                <p class="text-2xl font-bold text-primary-blue" id="fleetSize">48</p>
+                            </div>
+                            <i class="fas fa-plane-departure text-3xl text-primary-blue"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Recent Flight Updates</h3>
+                        <div class="space-y-3" id="recentFlights">
+                            <div class="flex items-center justify-between p-3 bg-light-blue rounded">
+                                <div>
+                                    <p class="font-medium">SL-001 NYC → LAX</p>
+                                    <p class="text-sm text-neutral-gray">Departed on time</p>
+                                </div>
+                                <span class="px-2 py-1 bg-success-green text-white text-xs rounded">On Time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">System Alerts</h3>
+                        <div class="space-y-3" id="systemAlerts">
+                            <div class="flex items-center p-3 bg-red-50 border-l-4 border-error-red rounded">
+                                <i class="fas fa-exclamation-triangle text-error-red mr-3"></i>
+                                <div>
+                                    <p class="font-medium">Weather Alert</p>
+                                    <p class="text-sm text-neutral-gray">Storm warning for LAX routes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flight Management Section -->
+            <div id="flights-section" class="section hidden">
+                <div class="mb-6 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Flight Management</h2>
+                        <p class="text-neutral-gray">Manage flights, schedules, and assignments</p>
+                    </div>
+                    <button id="addFlightBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add New Flight
+                    </button>
+                </div>
+
+                <!-- Flight Filters -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Flight Number</label>
+                            <input type="text" id="flightNumberFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="SL-001">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Origin</label>
+                            <select id="originFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">All Origins</option>
+                                <option value="NYC">New York (NYC)</option>
+                                <option value="LAX">Los Angeles (LAX)</option>
+                                <option value="CHI">Chicago (CHI)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select id="statusFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">All Status</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="boarding">Boarding</option>
+                                <option value="departed">Departed</option>
+                                <option value="arrived">Arrived</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button id="filterFlightsBtn" class="w-full bg-secondary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-search mr-2"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flights Table -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Flight</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aircraft</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Schedule</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="flightsTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Flight rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aircraft Management Section -->
+            <div id="aircraft-section" class="section hidden">
+                <div class="mb-6 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Aircraft Management</h2>
+                        <p class="text-neutral-gray">Manage aircraft fleet and assignments</p>
+                    </div>
+                    <button id="addAircraftBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add New Aircraft
+                    </button>
+                </div>
+                <!-- Aircraft Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-neutral-gray">Total Aircraft</p>
+                <p class="text-2xl font-bold text-primary-blue" id="totalAircraft">0</p>
+            </div>
+            <i class="fas fa-plane text-3xl text-secondary-blue"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-neutral-gray">Active Aircraft</p>
+                <p class="text-2xl font-bold text-success-green" id="activeAircraft">0</p>
+            </div>
+            <i class="fas fa-check-circle text-3xl text-success-green"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-neutral-gray">In Maintenance</p>
+                <p class="text-2xl font-bold text-warning-orange" id="maintenanceAircraft">0</p>
+            </div>
+            <i class="fas fa-wrench text-3xl text-warning-orange"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-neutral-gray">Total Capacity</p>
+                <p class="text-2xl font-bold text-primary-blue" id="totalCapacity">0</p>
+            </div>
+            <i class="fas fa-users text-3xl text-primary-blue"></i>
+        </div>
+    </div>
+</div>
+<!-- Search and Filter Controls -->
+<div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Aircraft</label>
+            <input type="text" id="aircraftSearch" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Search by model, registration...">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+            <select id="aircraftStatusFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="grounded">Grounded</option>
+                <option value="retired">Retired</option>
+            </select>
+        </div>
+        <div class="flex items-end space-x-2">
+            <button id="exportAircraftBtn" class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-download mr-2"></i>Export
+            </button>
+            <input type="file" id="importAircraftBtn" accept=".json" class="hidden">
+            <button onclick="document.getElementById('importAircraftBtn').click()" class="bg-warning-orange text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                <i class="fas fa-upload mr-2"></i>Import
+            </button>
+        </div>
+    </div>
+</div>
+               <!-- Aircraft Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="aircraftGrid">
+    <!-- Aircraft cards will be populated by JavaScript -->
+</div>
+</div>
+
+            
+
+            <!-- Routes Management Section -->
+            <!-- Enhanced Routes Management Section -->
+<div id="routes-section" class="section hidden">
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Route Management</h2>
+            <p class="text-neutral-gray">Manage flight routes and schedules</p>
+        </div>
+        <button id="addRouteBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-plus mr-2"></i>Add New Route
+        </button>
+    </div>
+
+    <!-- Route Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Routes</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalRoutes">0</p>
+                </div>
+                <i class="fas fa-route text-3xl text-secondary-blue"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Active Routes</p>
+                    <p class="text-2xl font-bold text-success-green" id="activeRoutes">0</p>
+                </div>
+                <i class="fas fa-check-circle text-3xl text-success-green"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Popular Routes</p>
+                    <p class="text-2xl font-bold text-warning-orange" id="popularRoutes">0</p>
+                </div>
+                <i class="fas fa-star text-3xl text-warning-orange"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Average Distance</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="avgDistance">0 km</p>
+                </div>
+                <i class="fas fa-globe text-3xl text-primary-blue"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Search Routes</label>
+                <input type="text" id="routeSearch" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Search by route ID, cities...">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Origin</label>
+                <select id="routeOriginFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Origins</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Destination</label>
+                <select id="routeDestinationFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Destinations</option>
+                </select>
+            </div>
+            <div class="flex items-end space-x-2">
+                <button id="filterRoutesBtn" class="bg-secondary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Filter
+                </button>
+                <button id="exportRoutesBtn" class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Routes Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortRoutes('id')">
+                            Route ID <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortRoutes('route')">
+                            Origin - Destination <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortRoutes('distance')">
+                            Distance <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortRoutes('duration')">
+                            Duration <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortRoutes('basePrice')">
+                            Base Price <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="routesTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Route rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
+            <div class="flex-1 flex justify-between items-center">
+                <div class="text-sm text-gray-700">
+                    Showing <span id="routesShowingStart">0</span> to <span id="routesShowingEnd">0</span> of <span id="routesTotalCount">0</span> routes
+                </div>
+                <div class="flex space-x-2">
+                    <button id="routesPrevBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <span id="routesPagination" class="flex space-x-1">
+                        <!-- Page numbers will be added here -->
+                    </span>
+                    <button id="routesNextBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Route Modal -->
+<div id="routeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800" id="routeModalTitle">Add New Route</h3>
+                <button id="closeRouteModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="routeForm" class="space-y-6">
+                <!-- Basic Route Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Route ID *</label>
+                        <input type="text" id="routeId" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        <p class="text-xs text-gray-500 mt-1">e.g., RT-NYC-LAX-001</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Route Name</label>
+                        <input type="text" id="routeName" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="e.g., New York to Los Angeles">
+                    </div>
+                </div>
+
+                <!-- Origin and Destination -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Origin Airport *</label>
+                        <select id="routeOrigin" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                            <option value="">Select Origin</option>
+                            <option value="NYC">New York (NYC) - John F. Kennedy International</option>
+                            <option value="LAX">Los Angeles (LAX) - Los Angeles International</option>
+                            <option value="CHI">Chicago (CHI) - O'Hare International</option>
+                            <option value="MIA">Miami (MIA) - Miami International</option>
+                            <option value="DFW">Dallas (DFW) - Dallas/Fort Worth International</option>
+                            <option value="ATL">Atlanta (ATL) - Hartsfield-Jackson International</option>
+                            <option value="SFO">San Francisco (SFO) - San Francisco International</option>
+                            <option value="BOS">Boston (BOS) - Logan International</option>
+                            <option value="SEA">Seattle (SEA) - Seattle-Tacoma International</option>
+                            <option value="LAS">Las Vegas (LAS) - McCarran International</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Destination Airport *</label>
+                        <select id="routeDestination" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                            <option value="">Select Destination</option>
+                            <option value="NYC">New York (NYC) - John F. Kennedy International</option>
+                            <option value="LAX">Los Angeles (LAX) - Los Angeles International</option>
+                            <option value="CHI">Chicago (CHI) - O'Hare International</option>
+                            <option value="MIA">Miami (MIA) - Miami International</option>
+                            <option value="DFW">Dallas (DFW) - Dallas/Fort Worth International</option>
+                            <option value="ATL">Atlanta (ATL) - Hartsfield-Jackson International</option>
+                            <option value="SFO">San Francisco (SFO) - San Francisco International</option>
+                            <option value="BOS">Boston (BOS) - Logan International</option>
+                            <option value="SEA">Seattle (SEA) - Seattle-Tacoma International</option>
+                            <option value="LAS">Las Vegas (LAS) - McCarran International</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Route Details -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Distance (km) *</label>
+                        <input type="number" id="routeDistance" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Duration (hours) *</label>
+                        <input type="number" id="routeDuration" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="0.5" min="0.5" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Base Price ($) *</label>
+                        <input type="number" id="routeBasePrice" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" required>
+                    </div>
+                </div>
+
+                <!-- Pricing Details -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Class Pricing Multipliers</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Economy Multiplier</label>
+                            <input type="number" id="economyMultiplier" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="0.1" value="1.0">
+                            <p class="text-xs text-gray-500 mt-1">Base price × multiplier</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Multiplier</label>
+                            <input type="number" id="businessMultiplier" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="0.1" value="2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Class Multiplier</label>
+                            <input type="number" id="firstClassMultiplier" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="0.1" value="4.0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="routeStatus" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="seasonal">Seasonal</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Frequency (flights per week)</label>
+                        <input type="number" id="routeFrequency" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" max="21">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <textarea id="routeNotes" class="w-full border border-gray-300 rounded-lg px-3 py-2" rows="3" placeholder="Additional notes about this route..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelRouteBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Route
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Route Details Modal -->
+<div id="routeDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Route Details</h3>
+                <button id="closeRouteDetailsModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="routeDetailsContent">
+                <!-- Route details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Enhanced Booking Management Section -->
+<div id="bookings-section" class="section hidden">
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Booking Management</h2>
+            <p class="text-neutral-gray">Manage customer bookings and reservations</p>
+        </div>
+        <button id="addBookingBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-plus mr-2"></i>New Booking
+        </button>
+    </div>
+
+    <!-- Booking Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Bookings</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalBookings">0</p>
+                </div>
+                <i class="fas fa-ticket-alt text-3xl text-secondary-blue"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Confirmed Bookings</p>
+                    <p class="text-2xl font-bold text-success-green" id="confirmedBookings">0</p>
+                </div>
+                <i class="fas fa-check-circle text-3xl text-success-green"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Pending Bookings</p>
+                    <p class="text-2xl font-bold text-warning-orange" id="pendingBookings">0</p>
+                </div>
+                <i class="fas fa-clock text-3xl text-warning-orange"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Revenue</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalRevenue">$0</p>
+                </div>
+                <i class="fas fa-dollar-sign text-3xl text-primary-blue"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="text-sm text-neutral-gray">Cancelled Bookings</p>
+            <p class="text-2xl font-bold text-red-500" id="cancelledBookings">0</p>
+        </div>
+        <i class="fas fa-times-circle text-3xl text-red-500"></i>
+    </div>
+</div>
+    </div>  
+
+    <!-- Search and Filter Controls -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Search Bookings</label>
+                <input type="text" id="bookingSearch" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Booking ID, passenger name...">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select id="bookingStatusFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Status</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="pending">Pending</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Flight</label>
+                <select id="bookingFlightFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Flights</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                <input type="date" id="bookingDateFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+            </div>
+            <div class="flex items-end space-x-2">
+                <button id="filterBookingsBtn" class="bg-secondary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Filter
+                </button>
+                <button id="exportBookingsBtn" class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('id')">
+                        Booking ID <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('passenger.firstName')">
+                        Passenger <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('flight')">
+                        Flight <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('date')">
+                        Travel Date <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('class')">
+                        Class <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="window.bookingManager.sortBookings('total')">
+                        Price <i class="fas fa-sort ml-1"></i>
+                    </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Booking rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
+            <div class="flex-1 flex justify-between items-center">
+                <div class="text-sm text-gray-700">
+                    Showing <span id="bookingsShowingStart">0</span> to <span id="bookingsShowingEnd">0</span> of <span id="bookingsTotalCount">0</span> bookings
+                </div>
+                <div class="flex space-x-2">
+                    <button id="bookingsPrevBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <span id="bookingsPagination" class="flex space-x-1">
+                        <!-- Page numbers will be added here -->
+                    </span>
+                    <button id="bookingsNextBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800" id="bookingModalTitle">New Booking</h3>
+                <button id="closeBookingModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="bookingForm" class="space-y-6">
+                <!-- Passenger Information -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Passenger Information</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                            <input type="text" id="passengerFirstName" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                            <input type="text" id="passengerLastName" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input type="email" id="passengerEmail" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                            <input type="tel" id="passengerPhone" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                            <input type="date" id="passengerDOB" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Passport Number</label>
+                            <input type="text" id="passengerPassport" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flight Information -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Flight Information</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Flight *</label>
+                            <select id="bookingFlight" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                                <option value="">Select Flight</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Class *</label>
+                            <select id="bookingClass" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                                <option value="">Select Class</option>
+                                <option value="economy">Economy</option>
+                                <option value="business">Business</option>
+                                <option value="first">First Class</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Passengers *</label>
+                            <input type="number" id="passengerCount" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" max="9" value="1" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Seat Preference</label>
+                            <select id="seatPreference" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <option value="">No Preference</option>
+                                <option value="window">Window</option>
+                                <option value="aisle">Aisle</option>
+                                <option value="middle">Middle</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                        <select id="paymentMethod" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="credit_card">Credit Card</option>
+                            <option value="debit_card">Debit Card</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="bookingStatus" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div>
+    <label class="block text-sm font-medium text-gray-700 mb-2">Travel Date *</label>
+    <input type="date" id="bookingDate" name="bookingDate" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+</div>
+                </div>
+
+                <!-- Price Summary -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Price Summary</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Base Price per Passenger</label>
+                            <input type="number" id="basePrice" class="w-full border border-gray-300 rounded-lg px-3 py-2" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Taxes & Fees</label>
+                            <input type="number" id="taxesAndFees" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total Amount</label>
+                            <input type="number" id="totalAmount" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Special Requests</label>
+                    <textarea id="specialRequests" class="w-full border border-gray-300 rounded-lg px-3 py-2" rows="3" placeholder="Any special requests or notes..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelBookingBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div id="bookingDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Booking Details</h3>
+                <button id="closeBookingDetailsModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="bookingDetailsContent">
+                <!-- Booking details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Airport Management Section -->
+<div id="airports-section" class="section hidden">
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Airport Management</h2>
+            <p class="text-neutral-gray">Manage airports, terminals, and facilities</p>
+        </div>
+        <button id="addAirportBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-plus mr-2"></i>Add New Airport
+        </button>
+    </div>
+
+    <!-- Airport Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Airports</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalAirports">0</p>
+                </div>
+                <i class="fas fa-plane-departure text-3xl text-secondary-blue"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Active Airports</p>
+                    <p class="text-2xl font-bold text-success-green" id="activeAirports">0</p>
+                </div>
+                <i class="fas fa-check-circle text-3xl text-success-green"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">International Airports</p>
+                    <p class="text-2xl font-bold text-warning-orange" id="internationalAirports">0</p>
+                </div>
+                <i class="fas fa-globe text-3xl text-warning-orange"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Gates</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalGates">0</p>
+                </div>
+                <i class="fas fa-door-open text-3xl text-primary-blue"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Search Airports</label>
+                <input type="text" id="airportSearch" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Search by name, code, city...">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                <select id="countryFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Countries</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                <select id="airportTypeFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="">All Types</option>
+                    <option value="international">International</option>
+                    <option value="domestic">Domestic</option>
+                    <option value="regional">Regional</option>
+                </select>
+            </div>
+            <div class="flex items-end space-x-2">
+                <button id="filterAirportsBtn" class="flex-1 bg-secondary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search mr-2"></i>Filter
+                </button>
+                <button id="exportAirportsBtn" class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Airports Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortAirports('code')">
+                            Code <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortAirports('name')">
+                            Airport Name <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortAirports('city')">
+                            City <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" onclick="sortAirports('country')">
+                            Country <i class="fas fa-sort ml-1"></i>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Gates
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="airportsTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Airport rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
+            <div class="flex-1 flex justify-between items-center">
+                <div class="text-sm text-gray-700">
+                    Showing <span id="airportsShowingStart">0</span> to <span id="airportsShowingEnd">0</span> of <span id="airportsTotalCount">0</span> airports
+                </div>
+                <div class="flex space-x-2">
+                    <button id="airportsPrevBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <span id="airportsPagination" class="flex space-x-1">
+                        <!-- Page numbers will be added here -->
+                    </span>
+                    <button id="airportsNextBtn" class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Airport Modal -->
+<div id="airportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800" id="airportModalTitle">Add New Airport</h3>
+                <button id="closeAirportModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="airportForm" class="space-y-6">
+                <!-- Basic Airport Information -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Airport Code *</label>
+<input type="text" id="airportCode" name="code" class="w-full border border-gray-300 rounded-lg px-3 py-2" maxlength="3" style="text-transform: uppercase;" required>                        <p class="text-xs text-gray-500 mt-1">3-letter IATA code (e.g., NYC, LAX)</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Airport Name *</label>
+                        <input type="text" id="airportName" name="name" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                    </div>
+                </div>
+
+                <!-- Location Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                        <input type="text" id="airportCity" name="city" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                        <select id="airportCountry" name="country" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                            <option value="">Select Country</option>
+                            <option value="United States">United States</option>
+                            <option value="Canada">Canada</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="China">China</option>
+                            <option value="India">India</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Coordinates -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                        <input type="number" id="airportLatitude" name="latitude" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="any" placeholder="e.g., 40.6413">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                        <input type="number" id="airportLongitude" name="longitude" class="w-full border border-gray-300 rounded-lg px-3 py-2" step="any" placeholder="e.g., -73.7781">
+                    </div>
+                </div>
+
+                <!-- Airport Details -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Type *</label>
+                        <select id="airportType" name="type" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                            <option value="">Select Type</option>
+                            <option value="international">International</option>
+                            <option value="domestic">Domestic</option>
+                            <option value="regional">Regional</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Terminals</label>
+                        <input type="number" id="airportTerminals" name="terminals" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" value="1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Gates *</label>
+                        <input type="number" id="airportGates" name="gates" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" required>
+                    </div>
+                </div>
+
+                <!-- Runway Information -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Runway Information</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Runways</label>
+                            <input type="number" id="airportRunways" name="runways" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" value="1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Longest Runway (meters)</label>
+                            <input type="number" id="longestRunway" name="longestRunway" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Elevation (meters)</label>
+                            <input type="number" id="airportElevation" name="elevation" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operating Information -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="airportStatus" name="status" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="active">Active</option>
+                            <option value="under-construction">Under Construction</option>
+                            <option value="temporarily-closed">Temporarily Closed</option>
+                            <option value="permanently-closed">Permanently Closed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Time Zone</label>
+                        <select id="airportTimezone" name="timezone" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="UTC-8">Pacific (UTC-8)</option>
+                            <option value="UTC-7">Mountain (UTC-7)</option>
+                            <option value="UTC-6">Central (UTC-6)</option>
+                            <option value="UTC-5">Eastern (UTC-5)</option>
+                            <option value="UTC+0">GMT (UTC+0)</option>
+                            <option value="UTC+1">CET (UTC+1)</option>
+                            <option value="UTC+9">JST (UTC+9)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Annual Passengers</label>
+                        <input type="number" id="annualPassengers" name="annualPassengers" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="0" placeholder="in millions">
+                    </div>
+                </div>
+
+                <!-- Facilities -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="text-lg font-medium text-gray-800 mb-3">Available Facilities</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityWifi" class="mr-2">
+                            <span class="text-sm">Free WiFi</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityLounge" class="mr-2">
+                            <span class="text-sm">Business Lounge</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityCarRental" class="mr-2">
+                            <span class="text-sm">Car Rental</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityHotel" class="mr-2">
+                            <span class="text-sm">Airport Hotel</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityParking" class="mr-2">
+                            <span class="text-sm">Parking</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityDutyFree" class="mr-2">
+                            <span class="text-sm">Duty Free</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityRestaurants" class="mr-2">
+                            <span class="text-sm">Restaurants</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="facilityATM" class="mr-2">
+                            <span class="text-sm">ATM/Banking</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <textarea id="airportNotes" name="notes" class="w-full border border-gray-300 rounded-lg px-3 py-2" rows="3" placeholder="Additional notes about this airport..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelAirportBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Airport
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Airport Details Modal -->
+<div id="airportDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Airport Details</h3>
+                <button id="closeAirportDetailsModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="airportDetailsContent">
+                <!-- Airport details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- Reports & Analytics Section -->
+<div id="reports-section" class="section hidden">
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Reports & Analytics</h2>
+            <p class="text-neutral-gray">Comprehensive insights and analytics for your airline operations</p>
+        </div>
+        <div class="flex space-x-2">
+            <button id="refreshReportsBtn" class="bg-secondary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-sync-alt mr-2"></i>Refresh Data
+            </button>
+            <button id="exportAllReportsBtn" class="bg-success-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-download mr-2"></i>Export All
+            </button>
+        </div>
+    </div>
+
+    <!-- Time Range Selector -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center space-x-2">
+                <label class="text-sm font-medium text-gray-700">Time Period:</label>
+                <select id="timePeriodSelect" class="border border-gray-300 rounded-lg px-3 py-2">
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month" selected>This Month</option>
+                    <option value="quarter">This Quarter</option>
+                    <option value="year">This Year</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+            <div id="customDateRange" class="hidden flex items-center space-x-2">
+                <input type="date" id="startDate" class="border border-gray-300 rounded-lg px-3 py-2">
+                <span class="text-gray-500">to</span>
+                <input type="date" id="endDate" class="border border-gray-300 rounded-lg px-3 py-2">
+            </div>
+            <button id="applyTimeRangeBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Apply
+            </button>
+        </div>
+    </div>
+
+    <!-- Key Metrics Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Total Revenue</p>
+                    <p class="text-2xl font-bold text-success-green" id="totalRevenue">$0</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <span id="revenueChange" class="text-success-green">+0%</span> vs previous period
+                    </p>
+                </div>
+                <i class="fas fa-dollar-sign text-3xl text-success-green"></i>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Passengers Served</p>
+                    <p class="text-2xl font-bold text-primary-blue" id="totalPassengers">0</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <span id="passengersChange" class="text-success-green">+0%</span> vs previous period
+                    </p>
+                </div>
+                <i class="fas fa-users text-3xl text-primary-blue"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">Load Factor</p>
+                    <p class="text-2xl font-bold text-warning-orange" id="loadFactor">0%</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <span id="loadFactorChange" class="text-success-green">+0%</span> vs previous period
+                    </p>
+                </div>
+                <i class="fas fa-percentage text-3xl text-warning-orange"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-neutral-gray">On-Time Performance</p>
+                    <p class="text-2xl font-bold text-success-green" id="onTimePerformance">0%</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <span id="onTimeChange" class="text-success-green">+0%</span> vs previous period
+                    </p>
+                </div>
+                <i class="fas fa-clock text-3xl text-success-green"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Revenue Trend Chart -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Revenue Trend</h3>
+                <div class="flex space-x-2">
+                    <button class="chart-period-btn active" data-period="7d">7D</button>
+                    <button class="chart-period-btn" data-period="30d">30D</button>
+                    <button class="chart-period-btn" data-period="90d">90D</button>
+                </div>
+            </div>
+            <div id="revenueChart" class="h-64"></div>
+        </div>
+
+        <!-- Flight Performance Chart -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Flight Status Distribution</h3>
+                <button id="exportFlightStatusBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Export
+                </button>
+            </div>
+            <div id="flightStatusChart" class="h-64"></div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Route Performance -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Top Routes by Revenue</h3>
+                <select id="routeMetricSelect" class="text-sm border border-gray-300 rounded px-2 py-1">
+                    <option value="revenue">Revenue</option>
+                    <option value="passengers">Passengers</option>
+                    <option value="load_factor">Load Factor</option>
+                </select>
+            </div>
+            <div id="routePerformanceChart" class="h-64"></div>
+        </div>
+
+        <!-- Aircraft Utilization -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Aircraft Utilization</h3>
+                <button id="exportUtilizationBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Export
+                </button>
+            </div>
+            <div id="aircraftUtilizationChart" class="h-64"></div>
+        </div>
+    </div>
+
+    <!-- Detailed Reports Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Financial Report -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Financial Summary</h3>
+                <button id="exportFinancialBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Export
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Gross Revenue:</span>
+                    <span class="font-semibold" id="grossRevenue">$0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Operating Costs:</span>
+                    <span class="font-semibold text-red-600" id="operatingCosts">$0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Fuel Costs:</span>
+                    <span class="font-semibold text-red-600" id="fuelCosts">$0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Maintenance Costs:</span>
+                    <span class="font-semibold text-red-600" id="maintenanceCosts">$0</span>
+                </div>
+                <hr class="my-2">
+                <div class="flex justify-between text-lg">
+                    <span class="font-semibold">Net Profit:</span>
+                    <span class="font-bold" id="netProfit">$0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Profit Margin:</span>
+                    <span class="font-semibold" id="profitMargin">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operational Metrics -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Operational Metrics</h3>
+                <button id="exportOperationalBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Export
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Total Flights:</span>
+                    <span class="font-semibold" id="reportTotalFlights">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Completed Flights:</span>
+                    <span class="font-semibold text-green-600" id="completedFlights">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Cancelled Flights:</span>
+                    <span class="font-semibold text-red-600" id="cancelledFlights">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Delayed Flights:</span>
+                    <span class="font-semibold text-yellow-600" id="delayedFlights">0</span>
+                </div>
+                <hr class="my-2">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Average Delay:</span>
+                    <span class="font-semibold" id="averageDelay">0 min</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Fleet Utilization:</span>
+                    <span class="font-semibold" id="fleetUtilization">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Metrics -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Customer Insights</h3>
+                <button id="exportCustomerBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-download mr-1"></i>Export
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Total Bookings:</span>
+                    <span class="font-semibold" id="reportTotalBookings">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">New Customers:</span>
+                    <span class="font-semibold text-green-600" id="newCustomers">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Repeat Customers:</span>
+                    <span class="font-semibold text-blue-600" id="repeatCustomers">0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Cancellation Rate:</span>
+                    <span class="font-semibold text-red-600" id="cancellationRate">0%</span>
+                </div>
+                <hr class="my-2">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Avg. Booking Value:</span>
+                    <span class="font-semibold" id="avgBookingValue">$0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Customer Satisfaction:</span>
+                    <span class="font-semibold text-green-600" id="customerSatisfaction">0/5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Data Tables -->
+    <div class="bg-white rounded-lg shadow-md mb-6">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Detailed Reports</h3>
+                <div class="flex space-x-2">
+                    <select id="detailedReportType" class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option value="flights">Flight Details</option>
+                        <option value="revenue">Revenue Breakdown</option>
+                        <option value="routes">Route Performance</option>
+                        <option value="aircraft">Aircraft Performance</option>
+                    </select>
+                    <button id="generateDetailedReportBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+            
+            <div id="detailedReportContent">
+                <div class="text-center py-8 text-gray-500">
+                    Select a report type and click "Generate Report" to view detailed data
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts and Recommendations -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Performance Alerts -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-exclamation-triangle text-warning-orange mr-2"></i>
+                Performance Alerts
+            </h3>
+            <div id="performanceAlerts" class="space-y-3">
+                <!-- Alerts will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Business Recommendations -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-lightbulb text-warning-orange mr-2"></i>
+                Business Recommendations
+            </h3>
+            <div id="businessRecommendations" class="space-y-3">
+                <!-- Recommendations will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chart-period-btn {
+    @apply px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors;
+}
+.chart-period-btn.active {
+    @apply bg-primary-blue text-white border-primary-blue;
+}
+</style>
+
+    <!-- Flight Modal -->
+    <div id="flightModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full m-4 max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800" id="flightModalTitle">Add New Flight</h3>
+                    <button id="closeFlightModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="flightForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Flight Number</label>
+                            <input type="text" id="flightNumber" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Aircraft</label>
+                            <select id="aircraftSelect" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                                <option value="">Select Aircraft</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Origin Airport</label>
+                            <select id="originAirport" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                                <option value="">Select Origin</option>
+                                <option value="NYC">New York (NYC)</option>
+                                <option value="LAX">Los Angeles (LAX)</option>
+                                <option value="CHI">Chicago (CHI)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Destination Airport</label>
+                            <select id="destinationAirport" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                                <option value="">Select Destination</option>
+                                <option value="NYC">New York (NYC)</option>
+                                <option value="LAX">Los Angeles (LAX)</option>
+                                <option value="CHI">Chicago (CHI)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Departure Date</label>
+                            <input type="date" id="departureDate" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Departure Time</label>
+                            <input type="time" id="departureTime" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Arrival Date</label>
+                            <input type="date" id="arrivalDate" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Arrival Time</label>
+                            <input type="time" id="arrivalTime" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Economy Price</label>
+                            <input type="number" id="economyPrice" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Price</label>
+                            <input type="number" id="businessPrice" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Class Price</label>
+                            <input type="number" id="firstClassPrice" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelFlightBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-save mr-2"></i>Save Flight
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 max-w-sm">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-4">
+            <div class="flex items-center">
+                <div id="toastIcon" class="flex-shrink-0"></div>
+                <div class="ml-3">
+                    <p id="toastMessage" class="text-sm font-medium text-gray-900"></p>
+                </div>
+                <button id="closeToastBtn" class="ml-auto flex-shrink-0 text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+  
+    <!-- Aircraft Modal -->
+<div id="aircraftModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full m-4 max-h-screen overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800" id="aircraftModalTitle">Add New Aircraft</h3>
+                <button id="closeAircraftModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="aircraftForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Aircraft Model *</label>
+                        <input type="text" id="aircraftModel" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Registration *</label>
+                        <input type="text" id="aircraftRegistration" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Manufacturer *</label>
+                        <select id="aircraftManufacturer" class="w-full border border-gray-300 rounded-lg px-3 py-2" required>
+                            <option value="">Select Manufacturer</option>
+                            <option value="Boeing">Boeing</option>
+                            <option value="Airbus">Airbus</option>
+                            <option value="Embraer">Embraer</option>
+                            <option value="Bombardier">Bombardier</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Capacity *</label>
+                        <input type="number" id="aircraftCapacity" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Year Manufactured *</label>
+                        <input type="number" id="aircraftYear" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1950" max="2024" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Total Flight Hours</label>
+                        <input type="number" id="aircraftFlightHours" class="w-full border border-gray-300 rounded-lg px-3 py-2" min="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="aircraftStatus" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            <option value="active">Active</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="grounded">Grounded</option>
+                            <option value="retired">Retired</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Maintenance</label>
+                        <input type="date" id="lastMaintenance" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Next Maintenance</label>
+                        <input type="date" id="nextMaintenance" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelAircraftBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Aircraft
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ <script src="admin-dashboard.js"></script>
+<script src="aircraft.js"></script>
+<script src="route.js"></script>
+<script src="booking.js"></script>
+<script src="airport.js"></script>
+<script src="report.js"></script>
+</script>
+</body>
+</html>

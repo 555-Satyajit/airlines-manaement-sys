@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyLine Airlines - Fly Beyond Horizons</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1e40af',
+                        'secondary-blue': '#3b82f6',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'zoom-in': 'zoomIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        zoomIn: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-lg transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full flex items-center justify-center">
+                            <i class="fas fa-plane text-white text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-primary-blue">SkyLine</span>
+                        <span class="text-sm text-gray-600 hidden sm:block">Airlines</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-primary-blue transition-colors font-medium">Home</a>
+                    <a href="#destinations" class="text-gray-700 hover:text-primary-blue transition-colors font-medium">Destinations</a>
+                    <a href="#flights" class="text-gray-700 hover:text-primary-blue transition-colors font-medium">Flights</a>
+                    <a href="#offers" class="text-gray-700 hover:text-primary-blue transition-colors font-medium">Offers</a>
+                    <a href="#services" class="text-gray-700 hover:text-primary-blue transition-colors font-medium">Services</a>
+                   <button id="signInBtn" class="bg-primary-blue text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-colors font-medium">
+    <i class="fas fa-user mr-2"></i>Sign In
+</button>
+
+                </div>
+                
+                <button class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Flight Search -->
+<section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Video -->
+    <div class="absolute inset-0">
+        <video 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            class="w-full h-full object-cover"
+            poster="benjamin-deyoung-9k6mg9Knowo-unsplash.jpg"
+        >
+             <source src="https://videos.pexels.com/video-files/1751261/1751261-uhd_1440_2560_30fps.mp4" type="video/mp4">
+            <source src="your-video-file.webm" type="video/webm">
+            <!-- Fallback image if video doesn't load -->
+            <img src="benjamin-deyoung-9k6mg9Knowo-unsplash.jpg" alt="Beautiful airplane flying above clouds" class="w-full h-full object-cover">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-blue/70 via-secondary-blue/50 to-primary-blue/70"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="animate-fade-in">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Fly Beyond
+                <span class="block text-yellow-400">Horizons</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+                Discover the world with SkyLine Airlines. Premium comfort, unbeatable prices, and destinations that inspire wanderlust.
+            </p>
+        </div>
+        
+        <!-- Flight Search Card -->
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-5xl mx-auto animate-slide-up">
+            <div class="flex flex-wrap justify-center mb-6">
+                <button class="bg-primary-blue text-white px-6 py-2 rounded-full mr-4 mb-2 font-medium">
+                    <i class="fas fa-plane mr-2"></i>Flights
+                </button>
+                <button class="text-gray-600 hover:text-primary-blue px-6 py-2 rounded-full mr-4 mb-2 font-medium transition-colors">
+                    <i class="fas fa-hotel mr-2"></i>Hotels
+                </button>
+                <button class="text-gray-600 hover:text-primary-blue px-6 py-2 rounded-full mb-2 font-medium transition-colors">
+                    <i class="fas fa-car mr-2"></i>Car Rental
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
+                    <div class="relative">
+                        <i class="fas fa-plane-departure absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Departure city" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+                    <div class="relative">
+                        <i class="fas fa-plane-arrival absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Destination city" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Departure</label>
+                    <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Return</label>
+                    <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                        <option>1 Adult</option>
+                        <option>2 Adults</option>
+                        <option>3 Adults</option>
+                        <option>4+ Adults</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Class</label>
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                        <option>Economy</option>
+                        <option>Premium Economy</option>
+                        <option>Business</option>
+                        <option>First Class</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="flight" class="w-full bg-gradient-to-r from-primary-blue to-secondary-blue text-white py-4 rounded-lg text-lg font-semibold hover:from-blue-800 hover:to-blue-700 transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-search mr-2"></i>Search Flights
+            </button>
+        </div>
+    </div>
+</section>
+
+    <!-- Popular Destinations -->
+    <section id="destinations" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Popular Destinations</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Explore breathtaking destinations around the world with our extensive network</p>
+            </div>
+            
+            <!-- Featured Destinations Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Paris -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <img src="diogo-fagundes-dbBKeN1s8GY-unsplash.jpg" alt="Paris Eiffel Tower" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-2xl font-bold mb-2">Paris</h3>
+                        <p class="text-sm opacity-90 mb-3">City of Love & Lights</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-semibold">From ₹599</span>
+                            <i class="fas fa-arrow-right opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tokyo -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <img src="karen-z-q_Z5BwvKf_8-unsplash.jpg" alt="Tokyo skyline" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-2xl font-bold mb-2">Tokyo</h3>
+                        <p class="text-sm opacity-90 mb-3">Modern Metropolis</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-semibold">From ₹799</span>
+                            <i class="fas fa-arrow-right opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New York -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <img src="fan-yang-ltWh1kvK-dQ-unsplash.jpg" alt="New York Manhattan" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-2xl font-bold mb-2">New York</h3>
+                        <p class="text-sm opacity-90 mb-3">The Big Apple</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-semibold">From ₹399</span>
+                            <i class="fas fa-arrow-right opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dubai -->
+                <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <img src="ahmed-aldaie-j-nRfGUHswQ-unsplash.jpg" alt="Dubai Burj Khalifa" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-2xl font-bold mb-2">Dubai</h3>
+                        <p class="text-sm opacity-90 mb-3">Luxury & Adventure</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-semibold">From ₹699</span>
+                            <i class="fas fa-arrow-right opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- More Destinations -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="luke-stackpoole-mOEqOtmuPG8-unsplash.jpg" alt="London" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">London</h4>
+                            <p class="text-sm">From ₹499</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="kay-TkEBaFrYJ_g-unsplash.jpg" alt="Sydney" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">Sydney</h4>
+                            <p class="text-sm">From ₹899</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="spencer-davis-ckotRXopwRM-unsplash.jpg" alt="Rome" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">Rome</h4>
+                            <p class="text-sm">From ₹549</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="tan-kaninthanond-RFumqN-7zI0-unsplash.jpg" alt="Bangkok" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">Bangkok</h4>
+                            <p class="text-sm">From ₹449</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="swapnil-bapat-sJ7pYyJFyuA-unsplash.jpg" alt="Singapore" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">Singapore</h4>
+                            <p class="text-sm">From ₹649</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="parth-vyas-J4Ui2ch3oRU-unsplash.jpg" alt="Mumbai" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <h4 class="font-bold">Mumbai</h4>
+                            <p class="text-sm">From ₹299</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="travel" class="bg-primary-blue text-white px-8 py-3 rounded-full hover:bg-blue-800 transition-colors font-semibold">
+                    View All Destinations
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers -->
+    <section id="offers" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Special Offers</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Don't miss out on these incredible deals and limited-time offers</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <!-- Main Offer -->
+                <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                    <img src="rayyu-maldives-xPsFXsbXJRg-unsplash.jpg" alt="Maldives paradise" class="w-full h-80 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary-blue/80 to-transparent"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-center text-white">
+                        <div class="bg-yellow-400 text-primary-blue px-4 py-2 rounded-full text-sm font-bold w-fit mb-4">
+                            FLASH SALE
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4">Maldives Paradise</h3>
+                        <p class="text-lg mb-6 opacity-90">Experience luxury overwater villas with crystal clear waters</p>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-3xl font-bold">₹1,299</span>
+                            <span class="text-lg line-through opacity-70">₹2,499</span>
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">48% OFF</span>
+                        </div>
+                        <button class="bg-white text-primary-blue px-6 py-3 rounded-full font-semibold mt-6 w-fit hover:bg-gray-100 transition-colors">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Secondary Offers -->
+                <div class="space-y-6">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="daniil-silantev-LVYRCOdnC7g-unsplash.jpg" alt="Europe tour" class="w-full h-40 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+                        <div class="absolute inset-0 p-6 flex items-center text-white">
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Europe Multi-City</h4>
+                                <p class="text-sm opacity-90 mb-3">Visit 5 cities in 10 days</p>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-lg font-bold">From ₹899</span>
+                                    <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">SAVE 30%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg">
+                        <img src="benjamin-deyoung-9k6mg9Knowo-unsplash (1).jpg" alt="Business class" class="w-full h-40 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+                        <div class="absolute inset-0 p-6 flex items-center text-white">
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Business Class Upgrade</h4>
+                                <p class="text-sm opacity-90 mb-3">Free upgrade on select routes</p>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-lg font-bold">+₹299 Only</span>
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">LIMITED</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Promo Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl p-6 text-white text-center">
+                    <i class="fas fa-percent text-4xl mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Early Bird Deals</h4>
+                    <p class="opacity-90 mb-4">Book 60 days in advance and save up to 40%</p>
+                    <button class="bg-white text-primary-blue px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                        Learn More
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white text-center">
+                    <i class="fas fa-users text-4xl mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Group Bookings</h4>
+                    <p class="opacity-90 mb-4">Special rates for groups of 10 or more passengers</p>
+                    <button class="bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                        Get Quote
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white text-center">
+                    <i class="fas fa-star text-4xl mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Loyalty Program</h4>
+                    <p class="opacity-90 mb-4">Earn miles and enjoy exclusive member benefits</p>
+                    <button class="bg-white text-purple-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                        Join Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Why Choose SkyLine?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Experience the difference with our world-class service and amenities</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Safety First</h3>
+                    <p class="text-gray-600">Industry-leading safety standards with modern fleet and experienced crew</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-clock text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">On-Time Performance</h3>
+                    <p class="text-gray-600">98.5% on-time performance with real-time flight tracking</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Premium Comfort</h3>
+                    <p class="text-gray-600">Spacious seats, gourmet meals, and personalized service</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-headset text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">24/7 Support</h3>
+                    <p class="text-gray-600">Round-the-clock customer support in multiple languages</p>
+                </div>
+            </div>
+            
+           <!-- Statistics -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-4xl font-bold text-primary-blue mb-2">25M+</div>
+                        <div class="text-gray-600">Happy Passengers</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-primary-blue mb-2">180+</div>
+                        <div class="text-gray-600">Destinations</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-primary-blue mb-2">150+</div>
+                        <div class="text-gray-600">Aircraft Fleet</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-primary-blue mb-2">98.5%</div>
+                        <div class="text-gray-600">On-Time Performance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Services</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Comprehensive travel solutions tailored to your needs</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Flight Booking -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-plane text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Flight Booking</h3>
+                    <p class="text-gray-600 mb-6">Easy online booking with flexible payment options and instant confirmation</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Real-time availability</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Seat selection</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Mobile boarding pass</li>
+                    </ul>
+                </div>
+                
+                <!-- Baggage Services -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-suitcase text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Baggage Services</h3>
+                    <p class="text-gray-600 mb-6">Flexible baggage options with tracking and priority handling available</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Extra baggage online</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Baggage tracking</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Priority handling</li>
+                    </ul>
+                </div>
+                
+                <!-- In-Flight Entertainment -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-tv text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Entertainment</h3>
+                    <p class="text-gray-600 mb-6">Premium in-flight entertainment with latest movies, TV shows, and music</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>1000+ movies & shows</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Live TV channels</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Gaming & music</li>
+                    </ul>
+                </div>
+                
+                <!-- Airport Services -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-building text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Airport Services</h3>
+                    <p class="text-gray-600 mb-6">Premium airport experiences with lounges and fast-track services</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Premium lounges</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Fast-track security</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Meet & assist</li>
+                    </ul>
+                </div>
+                
+                <!-- Special Assistance -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-wheelchair text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Special Assistance</h3>
+                    <p class="text-gray-600 mb-6">Dedicated support for passengers with special needs and requirements</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Wheelchair assistance</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Medical equipment</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Pet travel services</li>
+                    </ul>
+                </div>
+                
+                <!-- Travel Insurance -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Travel Insurance</h3>
+                    <p class="text-gray-600 mb-6">Comprehensive travel protection for peace of mind during your journey</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Trip cancellation</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Medical coverage</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Baggage protection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fleet Information -->
+    <section id="flights" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Modern Fleet</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Experience comfort and safety with our state-of-the-art aircraft</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Boeing 787 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="haydn-E2IbXf-qd_I-unsplash.jpg" alt="Boeing 787 Dreamliner" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Boeing 787 Dreamliner</h3>
+                        <p class="text-gray-600 mb-4">Long-haul comfort with advanced technology and fuel efficiency</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500">Capacity:</span>
+                                <span class="font-semibold ml-2">242-330 seats</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Range:</span>
+                                <span class="font-semibold ml-2">14,800 km</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Features:</span>
+                                <span class="font-semibold ml-2">WiFi, Power outlets</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Classes:</span>
+                                <span class="font-semibold ml-2">First, Business, Economy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Airbus A350 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="haci-elmas-RRSSi-7Xyno-unsplash.jpg" alt="Airbus A350" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Airbus A350</h3>
+                        <p class="text-gray-600 mb-4">Next-generation wide-body aircraft with superior passenger comfort</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500">Capacity:</span>
+                                <span class="font-semibold ml-2">276-440 seats</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Range:</span>
+                                <span class="font-semibold ml-2">15,000 km</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Features:</span>
+                                <span class="font-semibold ml-2">Advanced IFE, LED lighting</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Classes:</span>
+                                <span class="font-semibold ml-2">Business, Premium, Economy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Boeing 737 MAX -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <img src="fasyah-halim-vLHMX6wyFmQ-unsplash.jpg" alt="Boeing 737 MAX" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Boeing 737 MAX</h3>
+                        <p class="text-gray-600 mb-4">Efficient narrow-body aircraft perfect for short to medium-haul flights</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500">Capacity:</span>
+                                <span class="font-semibold ml-2">162-204 seats</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Range:</span>
+                                <span class="font-semibold ml-2">6,570 km</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Features:</span>
+                                <span class="font-semibold ml-2">Sky Interior, WiFi</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Classes:</span>
+                                <span class="font-semibold ml-2">Business, Economy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">What Our Passengers Say</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Real experiences from travelers who chose SkyLine Airlines</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Exceptional service from booking to landing. The crew was incredibly professional and the in-flight entertainment kept me engaged throughout the 12-hour flight to Tokyo."</p>
+                    <div class="flex items-center">
+                        <img src="/api/placeholder/50/50" alt="Customer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Sarah Johnson</h4>
+                            <p class="text-sm text-gray-600">Business Traveler</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Family vacation made easy! The kids loved the entertainment system, and the staff went above and beyond to accommodate our special meal requests. Will definitely fly SkyLine again."</p>
+                    <div class="flex items-center">
+                        <img src="/api/placeholder/50/50" alt="Customer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Michael Chen</h4>
+                            <p class="text-sm text-gray-600">Family Traveler</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"The premium economy seats were spacious and comfortable. Great value for money, and the punctuality was impressive. My go-to airline for European destinations."</p>
+                    <div class="flex items-center">
+                        <img src="/api/placeholder/50/50" alt="Customer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Emma Rodriguez</h4>
+                            <p class="text-sm text-gray-600">Frequent Flyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile App Promotion -->
+    <section class="py-20 bg-gradient-to-r from-primary-blue to-secondary-blue">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Travel Smarter with Our Mobile App</h2>
+                    <p class="text-xl mb-8 opacity-90">Book flights, check-in, track baggage, and manage your travel - all from your smartphone</p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-mobile-alt text-2xl mr-4"></i>
+                            <span class="text-lg">Mobile check-in and boarding passes</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bell text-2xl mr-4"></i>
+                            <span class="text-lg">Real-time flight notifications</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-2xl mr-4"></i>
+                            <span class="text-lg">Airport maps and gate information</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-suitcase text-2xl mr-4"></i>
+                            <span class="text-lg">Baggage tracking and claim</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#" class="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
+                            <i class="fab fa-apple text-2xl mr-3"></i>
+                            <div>
+                                <div class="text-xs">Download on the</div>
+                                <div class="text-lg font-semibold">App Store</div>
+                            </div>
+                        </a>
+                        <a href="#" class="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
+                            <i class="fab fa-google-play text-2xl mr-3"></i>
+                            <div>
+                                <div class="text-xs">Get it on</div>
+                                <div class="text-lg font-semibold">Google Play</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <img src="Skyline_PlayStore_View_Transparent.png" alt="SkyLine Mobile App" class="max-w-sm mx-auto animate-float">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Stay Updated</h2>
+            <p class="text-xl text-gray-600 mb-8">Subscribe to our newsletter for exclusive deals, travel tips, and the latest updates</p>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent">
+                    <button class="bg-primary-blue text-white px-8 py-3 rounded-lg hover:bg-blue-800 transition-colors font-semibold">
+                        Subscribe
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full flex items-center justify-center">
+                            <i class="fas fa-plane text-white text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-bold">SkyLine</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">Your trusted partner in the skies, connecting you to destinations worldwide with comfort, safety, and reliability.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Book a Flight</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Check-in Online</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Flight Status</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Manage Booking</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Baggage Info</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Travel Requirements</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Destinations -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Popular Destinations</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">New York</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">London</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Paris</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Tokyo</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Dubai</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Sydney</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact & Support -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Contact & Support</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span class="text-gray-300">+1-800-SKYLINE</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span class="text-gray-300">support@skyline.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-clock mr-3"></i>
+                            <span class="text-gray-300">24/7 Support</span>
+                        </li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Live Chat</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-gray-300 mb-4 md:mb-0">
+                        <p>&copy; 2024 SkyLine Airlines. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Terms of Service</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Cookie Policy</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">Accessibility</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-primary-blue text-white p-3 rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 opacity-0 pointer-events-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+    document.getElementById("signInBtn").addEventListener("click", function() {
+        window.location.href = "login.html";
+    });
+    document.getElementById("flight").addEventListener("click", function() {
+        window.location.href = "login.html";
+    });
+     document.getElementById("travel").addEventListener("click", function() {
+        window.location.href = "travel.html";
+    });
+    
+</script>
+
+</body>
+</html>

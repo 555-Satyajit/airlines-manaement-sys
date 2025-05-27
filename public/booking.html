@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyLine Airlines - Book Your Flight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        lightBlue: '#dbeafe',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444',
+                        neutral: '#6b7280',
+                        lightGray: '#f9fafb'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { 
+            animation: fadeIn 0.5s ease-in-out; 
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .slide-in { 
+            animation: slideIn 0.3s ease-out; 
+        }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateX(-20px); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .seat {
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .seat:hover:not(.occupied):not(.unavailable) {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .seat.available {
+            background-color: #10b981;
+            color: white;
+            border: 2px solid #059669;
+        }
+        
+        .seat.occupied {
+            background-color: #ef4444;
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        .seat.selected {
+            background-color: #1e40af;
+            color: white;
+            border: 2px solid #1d4ed8;
+            animation: selectedPulse 1s ease-in-out;
+        }
+        
+        .seat.premium {
+            background-color: #f59e0b;
+            color: white;
+            border: 2px solid #d97706;
+        }
+        
+        .seat.first-class {
+            background-color: #7c3aed;
+            color: white;
+            border: 2px solid #6d28d9;
+        }
+        
+        .seat.emergency {
+            background-color: #06b6d4;
+            color: white;
+            border: 2px solid #0891b2;
+        }
+        
+        @keyframes selectedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .progress-step {
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            background-color: #1e40af;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .aircraft-body {
+            background: linear-gradient(to bottom, #e5e7eb, #f3f4f6);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .payment-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1e40af;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .qr-code {
+            background: 
+                repeating-linear-gradient(0deg, #000, #000 2px, transparent 2px, transparent 4px),
+                repeating-linear-gradient(90deg, #000, #000 2px, transparent 2px, transparent 4px);
+            width: 120px;
+            height: 120px;
+        }
+    </style>
+</head>
+<body class="bg-lightGray min-h-screen">
+
+
+    <!-- Progress Bar -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="progress-step active flex items-center" id="step1">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center mr-2">1</div>
+                    <span class="hidden sm:inline">Flight Review</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2">
+                    <div class="h-full bg-primary transition-all duration-300" id="progress1" style="width: 0%"></div>
+                </div>
+                <div class="progress-step flex items-center" id="step2">
+                    <div class="w-8 h-8 rounded-full bg-neutral text-white flex items-center justify-center mr-2">2</div>
+                    <span class="hidden sm:inline">Seat Selection</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2">
+                    <div class="h-full bg-primary transition-all duration-300" id="progress2" style="width: 0%"></div>
+                </div>
+                <div class="progress-step flex items-center" id="step3">
+                    <div class="w-8 h-8 rounded-full bg-neutral text-white flex items-center justify-center mr-2">3</div>
+                    <span class="hidden sm:inline">Passenger Info</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2">
+                    <div class="h-full bg-primary transition-all duration-300" id="progress3" style="width: 0%"></div>
+                </div>
+                <div class="progress-step flex items-center" id="step4">
+                    <div class="w-8 h-8 rounded-full bg-neutral text-white flex items-center justify-center mr-2">4</div>
+                    <span class="hidden sm:inline">Payment</span>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-2">
+                    <div class="h-full bg-primary transition-all duration-300" id="progress4" style="width: 0%"></div>
+                </div>
+                <div class="progress-step flex items-center" id="step5">
+                    <div class="w-8 h-8 rounded-full bg-neutral text-white flex items-center justify-center mr-2">5</div>
+                    <span class="hidden sm:inline">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 py-6">
+        <!-- Step 1: Flight Review -->
+        <div id="stepContent1" class="step-content">
+            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
+                <h2 class="text-2xl font-bold text-primary mb-6">Review Your Flight</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Flight Details -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-primary mb-4">Flight Details</h3>
+                        <div id="flightDetails">
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <div class="text-2xl font-bold text-primary" id="deptTime">08:30</div>
+                                    <div class="text-neutral" id="origin">JFK</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-sm text-neutral" id="duration">5h 15m</div>
+                                    <div class="flex items-center my-2">
+                                        <div class="h-px bg-gray-300 flex-1"></div>
+                                        <div class="px-2">✈️</div>
+                                        <div class="h-px bg-gray-300 flex-1"></div>
+                                    </div>
+                                    <div class="text-sm text-neutral">Direct</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-primary" id="arrTime">11:45</div>
+                                    <div class="text-neutral" id="destination">LAX</div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p><strong>Flight:</strong> <span id="flightNum">SL101</span></p>
+                                    <p><strong>Date:</strong> <span id="flightDate">May 23, 2025</span></p>
+                                </div>
+                                <div>
+                                    <p><strong>Aircraft:</strong> <span id="aircraft">Boeing 737</span></p>
+                                    <p><strong>Class:</strong> <span id="flightClass">Economy</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="changeFlightBtn" class="mt-4 text-secondary hover:text-primary text-sm underline">
+                            Change Flight
+                        </button>
+                    </div>
+
+                    <!-- Price Summary -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-primary mb-4">Price Summary</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>Base Fare</span>
+                                <span id="baseFare">$299</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Taxes & Fees</span>
+                                <span id="taxes">$45</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Seat Selection</span>
+                                <span id="seatFee">$0</span>
+                            </div>
+                            <hr class="my-2">
+                            <div class="flex justify-between font-bold text-lg">
+                                <span>Total</span>
+                                <span id="totalPrice" class="text-success">$344</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button id="continueStep1" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors">
+                        Continue to Seat Selection →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Seat Selection -->
+        <div id="stepContent2" class="step-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
+                <h2 class="text-2xl font-bold text-primary mb-6">Select Your Seat</h2>
+                
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Seat Map -->
+                    <div class="lg:col-span-2">
+                        <div class="aircraft-body">
+                            <div class="text-center mb-4">
+                                <h3 class="font-semibold text-neutral">Boeing 737-800</h3>
+                                <div class="text-sm text-neutral">Total Seats: 180</div>
+                            </div>
+                            
+                            <!-- Seat Map -->
+                            <div id="seatMap" class="max-w-md mx-auto">
+                                <!-- First Class (Rows 1-2) -->
+                                <div class="mb-4">
+                                    <div class="text-center text-sm font-semibold text-purple-600 mb-2">First Class</div>
+                                    <div id="firstClassSeats"></div>
+                                </div>
+                                
+                                <!-- Business Class (Rows 3-5) -->
+                                <div class="mb-4">
+                                    <div class="text-center text-sm font-semibold text-yellow-600 mb-2">Business Class</div>
+                                    <div id="businessSeats"></div>
+                                </div>
+                                
+                                <!-- Economy Class (Rows 6-30) -->
+                                <div>
+                                    <div class="text-center text-sm font-semibold text-green-600 mb-2">Economy Class</div>
+                                    <div id="economySeats"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seat Legend and Info -->
+                    <div>
+                        <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                            <h3 class="font-semibold text-primary mb-3">Seat Legend</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <div class="seat available mr-2"></div>
+                                    <span>Available</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="seat occupied mr-2"></div>
+                                    <span>Occupied</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="seat selected mr-2"></div>
+                                    <span>Selected</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="seat premium mr-2"></div>
+                                    <span>Premium (+$25)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="seat first-class mr-2"></div>
+                                    <span>First Class</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="seat emergency mr-2"></div>
+                                    <span>Emergency Exit</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-primary mb-3">Selected Seat</h3>
+                            <div id="selectedSeatInfo">
+                                <p class="text-neutral">No seat selected</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button id="backStep2" class="bg-neutral hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors">
+                        ← Back
+                    </button>
+                    <button id="continueStep2" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors">
+                        Continue to Passenger Info →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Passenger Information -->
+        <div id="stepContent3" class="step-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
+                <h2 class="text-2xl font-bold text-primary mb-6">Passenger Information</h2>
+                
+                <form id="passengerForm">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                            <input type="text" id="passengerFirstName" required 
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                            <input type="text" id="passengerLastName" required 
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                            <input type="email" id="passengerEmail" required 
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                            <input type="tel" id="passengerPhone" required 
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                            <input type="date" id="passengerDOB" required 
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                            <select id="passengerGender" 
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-primary mb-4">Additional Preferences</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Meal Preference</label>
+                                <select id="mealPreference" 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option value="">No Preference</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                    <option value="halal">Halal</option>
+                                    <option value="kosher">Kosher</option>
+                                    <option value="gluten-free">Gluten Free</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Special Assistance</label>
+                                <select id="specialAssistance" 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <option value="">None Required</option>
+                                    <option value="wheelchair">Wheelchair Assistance</option>
+                                    <option value="blind">Assistance for Blind</option>
+                                    <option value="deaf">Assistance for Deaf</option>
+                                    <option value="elderly">Elderly Assistance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="flex justify-between mt-8">
+                    <button id="backStep3" class="bg-neutral hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors">
+                        ← Back
+                    </button>
+                    <button id="continueStep3" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors">
+                        Continue to Payment →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Payment -->
+        <div id="stepContent4" class="step-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
+                <h2 class="text-2xl font-bold text-primary mb-6">Payment Information</h2>
+                
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Payment Form -->
+                    <div class="lg:col-span-2">
+                        <form id="paymentForm">
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold text-primary mb-4">Payment Method</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                                    <label class="payment-method cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="visa" class="hidden">
+                                        <div class="border-2 border-gray-300 rounded-lg p-3 text-center hover:border-primary transition-colors">
+                                            <div class="text-2xl mb-1">💳</div>
+                                            <div class="text-sm">Visa</div>
+                                        </div>
+                                    </label>
+                                    <label class="payment-method cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="mastercard" class="hidden">
+                                        <div class="border-2 border-gray-300 rounded-lg p-3 text-center hover:border-primary transition-colors">
+                                            <div class="text-2xl mb-1">💳</div>
+                                            <div class="text-sm">MasterCard</div>
+                                        </div>
+                                    </label>
+                                    <label class="payment-method cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="paypal" class="hidden">
+                                        <div class="border-2 border-gray-300 rounded-lg p-3 text-center hover:border-primary transition-colors">
+                                            <div class="text-2xl mb-1">🅿️</div>
+                                            <div class="text-sm">PayPal</div>
+                                        </div>
+                                    </label>
+                                    <label class="payment-method cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="apple" class="hidden">
+                                        <div class="border-2 border-gray-300 rounded-lg p-3 text-center hover:border-primary transition-colors">
+                                            <div class="text-2xl mb-1">🍎</div>
+                                            <div class="text-sm">Apple Pay</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="cardDetails">
+                                <h3 class="text-lg font-semibold text-primary mb-4">Card Details</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Card Number *</label>
+                                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required 
+                                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Cardholder Name *</label>
+                                        <input type="text" id="cardHolder" required 
+                                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date *</label>
+                                            <input type="text" id="expiryDate" placeholder="MM/YY" required 
+                                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">CVV *</label>
+                                            <input type="text" id="cvv" placeholder="123" required 
+                                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <h3 class="text-lg font-semibold text-primary mb-4">Billing Address</h3>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+                                            <select id="billingCountry" required 
+                                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                                <option value="">Select Country</option>
+                                                <option value="US">United States</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="UK">United Kingdom</option>
+                                                <option value="AU">Australia</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code *</label>
+                                            <input type="text" id="zipCode" required 
+                                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div>
+                        <div class="payment-card mb-4">
+                            <h3 class="text-lg font-semibold mb-4">Order Summary</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Flight Fare</span>
+                                    <span id="summaryFare">$299</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Taxes & Fees</span>
+                                    <span id="summaryTaxes">$45</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Seat Selection</span>
+                                    <span id="summarySeat">$0</span>
+                                </div>
+                                <hr class="border-white/30 my-2">
+                                <div class="flex justify-between font-bold text-lg">
+                                    <span>Total</span>
+                                    <span id="summaryTotal">$344</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-neutral space-y-1">
+                            <p>• Your card will be charged in USD</p>
+                            <p>• Secure 256-bit SSL encryption</p>
+                            <p>• 24/7 customer support available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button id="backStep4" class="bg-neutral hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors">
+                        ← Back
+                    </button>
+                    <button id="processPayment" class="bg-success hover:bg-green-600 text-white px-8 py-3 rounded-lg transition-colors">
+                        <span id="paymentButtonText">Process Payment</span>
+                        <div id="paymentSpinner" class="spinner hidden inline-block ml-2"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Confirmation -->
+        <div id="stepContent5" class="step-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 fade-in">
+                <div class="text-center mb-8">
+                    <div class="text-6xl mb-4">✅</div>
+                    <h2 class="text-3xl font-bold text-success mb-2">Booking Confirmed!</h2>
+                    <p class="text-neutral">Your flight has been successfully booked. Confirmation details have been sent to your email.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Booking Details -->
+                    <div class="lg:col-span-2">
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold text-primary mb-4">Booking Details</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-2">Flight Information</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p><strong>Confirmation:</strong> <span id="confirmationNumber" class="text-primary font-mono">SL789ABC</span></p>
+                                        <p><strong>Flight:</strong> <span id="confirmFlight">SL101</span></p>
+                                        <p><strong>Date:</strong> <span id="confirmDate">May 23, 2025</span></p>
+                                        <p><strong>Route:</strong> <span id="confirmRoute">JFK → LAX</span></p>
+                                        <p><strong>Time:</strong> <span id="confirmTime">08:30 - 11:45</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-semibold mb-2">Passenger Details</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p><strong>Name:</strong> <span id="confirmPassenger">John Doe</span></p>
+                                        <p><strong>Seat:</strong> <span id="confirmSeat">12A</span></p>
+                                        <p><strong>Class:</strong> <span id="confirmClass">Economy</span></p>
+                                        <p><strong>Meal:</strong> <span id="confirmMeal">No Preference</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 p-4 bg-lightBlue rounded-lg">
+                                <h4 class="font-semibold text-primary mb-2">Important Reminders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Check-in opens 24 hours before departure</li>
+                                    <li>• Arrive at airport 2 hours before domestic flights</li>
+                                    <li>• Bring valid photo identification</li>
+                                    <li>• Review baggage allowance and restrictions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boarding Pass Preview & Actions -->
+                    <div>
+                        <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold text-primary mb-3">Mobile Boarding Pass</h4>
+                            <div class="bg-gradient-to-r from-primary to-secondary text-white rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold mb-2">SkyLine Airlines</div>
+                                <div class="text-sm opacity-90 mb-3">JFK → LAX</div>
+                                <div class="qr-code mx-auto mb-3"></div>
+                                <div class="text-xs">Scan at gate</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button id="downloadTicket" class="w-full bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                                📱 Add to Wallet
+                            </button>
+                            <button id="emailTicket" class="w-full bg-secondary hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                📧 Email Boarding Pass
+                            </button>
+                            <button id="printTicket" class="w-full bg-neutral hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                🖨️ Print Boarding Pass
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button id="newBooking" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors mr-4">
+                        Book Another Flight
+                    </button>
+                    <button id="manageBokking" class="bg-secondary hover:bg-blue-600 text-white px-8 py-3 rounded-lg transition-colors">
+                        Manage Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script src="enhanced-booking-system.js"></script>
+
+</body>
+</html>

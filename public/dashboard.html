@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - SkyLine Airlines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        lightBlue: '#dbeafe',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        error: '#ef4444',
+                        neutral: '#6b7280',
+                        lightGray: '#f9fafb'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { 
+            animation: fadeIn 0.5s ease-in-out; 
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .slide-down { 
+            animation: slideDown 0.3s ease-out; 
+        }
+        @keyframes slideDown { 
+            from { opacity: 0; transform: translateY(-10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .notification {
+            animation: slideInRight 0.3s ease-out;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        #bookingFrame {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-lightGray min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-primary shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-white text-xl font-bold">✈️ SkyLine Airlines</h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-white" id="userGreeting">Welcome, User!</span>
+                    <button id="backToDashboard" class="hidden bg-secondary hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors">
+                        ← Back to Dashboard
+                    </button>
+                    <button id="logoutBtn" class="bg-error hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <div id="dashboardContent" class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Dashboard Tabs -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button id="searchTab" class="tab-button border-b-2 border-primary text-primary py-2 px-1 font-medium text-sm">
+                        🔍 Search Flights
+                    </button>
+                    <button id="bookingsTab" class="tab-button border-b-2 border-transparent text-neutral hover:text-primary py-2 px-1 font-medium text-sm">
+                        📋 My Bookings
+                    </button>
+                    <button id="profileTab" class="tab-button border-b-2 border-transparent text-neutral hover:text-primary py-2 px-1 font-medium text-sm">
+                        👤 Profile
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Search Tab Content -->
+        <div id="searchContent" class="tab-content fade-in">
+            <!-- Flight Search Form -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Search Flights</h2>
+                <form id="flightSearchForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                        <select id="fromAirport" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Select Origin</option>
+                            <option value="JFK">JFK - John F. Kennedy International</option>
+                            <option value="LAX">LAX - Los Angeles International</option>
+                            <option value="ORD">ORD - Chicago O'Hare International</option>
+                            <option value="DFW">DFW - Dallas/Fort Worth International</option>
+                            <option value="DEN">DEN - Denver International</option>
+                            <option value="SFO">SFO - San Francisco International</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">To</label>
+                        <select id="toAirport" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Select Destination</option>
+                            <option value="JFK">JFK - John F. Kennedy International</option>
+                            <option value="LAX">LAX - Los Angeles International</option>
+                            <option value="ORD">ORD - Chicago O'Hare International</option>
+                            <option value="DFW">DFW - Dallas/Fort Worth International</option>
+                            <option value="DEN">DEN - Denver International</option>
+                            <option value="SFO">SFO - San Francisco International</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+                        <input type="date" id="departureDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Class</label>
+                        <select id="travelClass" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">All Classes</option>
+                            <option value="economy">Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First Class</option>
+                        </select>
+                    </div>
+                    <div class="lg:col-span-4">
+                        <button type="submit" class="bg-primary hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors">
+                            🔍 Search Flights
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6" id="filtersSection" style="display: none;">
+                <h3 class="text-lg font-semibold text-primary mb-4">Filters</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="minPrice" placeholder="Min" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <span>-</span>
+                            <input type="number" id="maxPrice" placeholder="Max" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Departure Time</label>
+                        <select id="departureTimeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option value="">Any Time</option>
+                            <option value="morning">Morning (6AM-12PM)</option>
+                            <option value="afternoon">Afternoon (12PM-6PM)</option>
+                            <option value="evening">Evening (6PM-12AM)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Airlines</label>
+                        <select id="airlineFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option value="">All Airlines</option>
+                            <option value="SkyLine">SkyLine Airlines</option>
+                            <option value="Delta">Delta Airlines</option>
+                            <option value="American">American Airlines</option>
+                            <option value="United">United Airlines</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4 space-x-2">
+                    <button id="applyFiltersBtn" class="bg-secondary hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm transition-colors">
+                        Apply Filters
+                    </button>
+                    <button id="clearFiltersBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm transition-colors">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flight Results -->
+            <div id="flightResults" class="space-y-4"></div>
+        </div>
+
+        <!-- Bookings Tab Content -->
+        <div id="bookingsContent" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">My Bookings</h2>
+                <div id="bookingsList" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- Profile Tab Content -->
+        <div id="profileContent" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Profile Information</h2>
+                <form id="profileForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input type="text" id="firstName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input type="text" id="lastName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <input type="tel" id="phone" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="bg-primary hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Integration Container (Hidden by default) -->
+    <div id="bookingContainer" class="hidden">
+        <iframe id="bookingFrame" src="" class="w-full h-screen border-0"></iframe>
+    </div>
+
+    <!-- Flight Details Modal -->
+    <div id="flightModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg max-w-2xl w-full m-4 max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-primary">Flight Details</h3>
+                    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="flightModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+   <script src="dashboard.js"></script>
+<script src="ds-bs.js"></script>
+</body>
+</html>
