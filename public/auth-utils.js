@@ -4,7 +4,7 @@ class AuthManager {
         this.TOKEN_KEY = 'skyline_auth_token';
         this.USER_KEY = 'skyline_user_data';
         this.REFRESH_TOKEN_KEY = 'skyline_refresh_token';
-        this.apiBaseUrl = 'http://localhost:5000/api';
+        this.apiBaseUrl = '/api';
     }
 
     // Store authentication data
