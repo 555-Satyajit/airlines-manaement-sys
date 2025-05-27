@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toastMessage = document.getElementById('toastMessage');
 
     // API Base URL - FIXED: Remove trailing slash issues
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL?.replace(/\/$/, '');
+const API_BASE_URL = 'mongodb+srv://pujapandasatyajit:5AKcloRlTIXKAwMe@cluster0.zn78p.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Replace with your actual API URL
 function saveAuthToken(token) {
     try {
         // Since we can't use localStorage in artifacts, store in memory and sessionStorage as fallback
