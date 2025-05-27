@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toastMessage = document.getElementById('toastMessage');
 
     // API Base URL - FIXED: Remove trailing slash issues
-const API_BASE_URL = 'https://airlines-manaement-sys.vercel.app//api'; // Replace with your actual API URL
+const API_BASE_URL = '/api'; // Replace with your actual API URL
 function saveAuthToken(token) {
     try {
         // Since we can't use localStorage in artifacts, store in memory and sessionStorage as fallback
