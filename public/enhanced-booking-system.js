@@ -2,7 +2,7 @@
 class BookingSystem {
     constructor() {
         this.currentStep = 1;
-        this.apiBaseUrl = 'http://localhost:5000/api';
+        this.apiBaseUrl = '/api';
         this.bookingData = {
             flight: {
                 id: null,
